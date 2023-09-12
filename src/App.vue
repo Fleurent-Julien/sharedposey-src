@@ -17,6 +17,7 @@ import HelloWorld from './components/HelloWorld.vue'
     </div>
   </header>
 
+  <h1>Ceci est un test de modification</h1>
   <RouterView />
 </template>
 
