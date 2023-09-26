@@ -53,7 +53,7 @@ export default {
         }
     },
     async logout() {
-    await client.AuthStore.clear();;
+    await pb.AuthStore.clear();;
     document.getElementById("status").innerHTML = "You are logged out";
   },
     //this method allows the already registred user to log in the system.
