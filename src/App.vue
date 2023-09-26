@@ -33,7 +33,7 @@ import PocketBase from "pocketbase";
 <script>
 var pocketbase_ip = "";
 if (import.meta.env.MODE === "production")
-  pocketbase_ip = "http://193.168.146.193:80";
+  pocketbase_ip = "http://193.168.146.193";
 else pocketbase_ip = "http://127.0.0.1:8090";
 const pb = new PocketBase(pocketbase_ip);
 
@@ -52,6 +52,15 @@ export default {
           document.getElementById("status").innerHTML = "You are now logged in";
         }
     },
+    async logout() {
+    await pb
+    .auth().signOut()
+    .then(() => {
+      if (pb.authStore.isValid) {
+          document.getElementById("status").innerHTML = "You are now logged out";
+        }
+    })
+  },
     //this method allows the already registred user to log in the system.
     async register() {
       const currentUser = await pb.collection("users").create({
@@ -62,7 +71,7 @@ export default {
       });
       if (currentUser) {
         document.getElementById("status").innerHTML =
-          "Wainting for your email validation ...";
+          "Waiting for your email validation ...";
         await pb
           .collection("users")
           .requestVerification(document.getElementById("email").value);
