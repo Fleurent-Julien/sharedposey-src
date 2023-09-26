@@ -54,12 +54,10 @@ export default {
     },
     async logout() {
     await pb
-    .auth().signOut()
-    .then(() => {
-      if (pb.authStore.isValid) {
-          document.getElementById("status").innerHTML = "You are now logged out";
-        }
-    })
+      .pb.authStore.clear();
+      currentUser.value = null;
+      if (pb.authStore.clear)
+      document.getElementById("Status").innerHTML = "You are logged out";
   },
     //this method allows the already registred user to log in the system.
     async register() {
