@@ -24,20 +24,19 @@ import PocketBase from "pocketbase";
       /><br />
       <label>password: </label><br />
       <input type="password" required id="passwd" /><br />
-      <button v-on:click="login()">Sign In</button>
+      <button v-on:click="login()">Sign In Google</button>
+      <button v-on:click="github()">Sign In GitHub</button>
       <button v-on:click="add()">Add</button>
-      <p><label id="status"> You are not yet connected </label><br /></p>
+      <p><label id="status"> You are not yet connected </label></p>
     </div>
   </header>
-
-  <main></main>
 </template>
 
 <script>
 var connected = false;
 var pocketbase_ip = "";
 if (import.meta.env.MODE === "production")
-  pocketbase_ip = "https://www.shared-poesy.jfleurent.fr:443";
+pocketbase_ip = "";
 else pocketbase_ip = "http://127.0.0.1:8090";
 const pb = new PocketBase(pocketbase_ip);
 var currentUser;
@@ -52,7 +51,17 @@ export default {
         connected = true;
         currentUser=pb.authStore.model;
       }
-    }/*,
+    },
+
+    async github() {
+      await pb.collection("users").authWithOAuth2({ provider: "github" });
+      if (pb.authStore.isValid) {
+        document.getElementById("status").innerHTML = "You are now logged in";
+        connected = true;
+        currentUser=pb.authStore.model;
+      }
+    }
+    /*
     async add() {
       const record = await pb.collection("poems").create({
         title: "good year",
